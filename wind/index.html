@@ -439,7 +439,7 @@
           </div>
           <div style="display:flex;flex-direction:column;align-items:center">
             <div class="qrcode-wrap" id="qr-front"></div>
-            <div class="qr-caption">LINE QR</div>
+            <div class="qr-caption">名片 QR</div>
           </div>
         </div>
         <div class="body">
@@ -473,7 +473,7 @@
           </div>
           <div style="display:flex;flex-direction:column;align-items:center">
             <div class="qrcode-wrap" id="qr-back"></div>
-            <div class="qr-caption">Website QR</div>
+            <div class="qr-caption">Card QR</div>
           </div>
         </div>
         <div class="body">
@@ -577,11 +577,21 @@
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 </div>
 
-<!-- QRCode generation -->
+<!-- QRCode generation：改為「先連名片本身」- 掃碼回到本頁 -->
 <script>
 (function(){
-  const urlFront = "https://line.me/ti/p/~0980463400";
-  const urlBack = "https://wind.rock903400.workers.dev/";
+  const CANONICAL_CARD_URL = "https://wind-card.pages.dev/";
+  function getCardUrl(){
+    try{
+      if(location.protocol === 'http:' || location.protocol === 'https:'){
+        let url = location.href.split('#')[0].split('?')[0];
+        if(url.endsWith('index.html')) url = url.slice(0, -10);
+        return url;
+      }
+    }catch(e){}
+    return CANONICAL_CARD_URL;
+  }
+  const cardUrl = getCardUrl();
   function genQR(containerId, text){
     const el = document.getElementById(containerId);
     if(!el) return;
@@ -610,9 +620,10 @@
     document.head.appendChild(script);
   }
   loadQRCodeJS(function(){
-    genQR("qr-front", urlFront);
-    genQR("qr-back", urlBack);
+    genQR("qr-front", cardUrl);
+    genQR("qr-back", cardUrl);
   });
+  window.__CARD_QR_URL__ = cardUrl;
 })();
 </script>
 
