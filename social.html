@@ -255,8 +255,8 @@
         <div class="cicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
         <div style="flex:1">
           <div class="clabel">官網 Website</div>
-          <div class="cvalue"><a class="official-link" href="http://www.culroc.org.tw" target="_blank" rel="noopener">www.culroc.org.tw</a> <span style="color:#8aa0b8;font-size:11px">· 統編 04141621</span> <span class="official-status" style="font-size:10px;color:#8aa0b8"></span></div>
-          <div style="font-size:11px;color:#8aa0b8">CREDIT UNION LEAGUE OF THE REPUBLIC OF CHINA <span style="color:#c47000">· https 暫時逾時，請用 http</span></div>
+          <div class="cvalue"><a class="official-link" href="http://www.culroc.org.tw" target="_blank" rel="noopener">www.culroc.org.tw</a> <span style="color:#8aa0b8;font-size:11px">· 統編 04141621</span></div>
+          <div style="font-size:11px;color:#8aa0b8">CREDIT UNION LEAGUE OF THE REPUBLIC OF CHINA</div>
         </div>
       </div>
     </div>
@@ -265,8 +265,8 @@
       <div class="qr-box" id="qr-social"></div>
       <div class="qr-info">
         <h3>掃碼開啟名片</h3>
-        <p>對方用相機掃此 QR，即可開啟你的電子名片，再從名片內用 <b>http</b> 開啟官網（已自動容錯 443 逾時）。</p>
-        <div class="hint">長按 QR 可儲存圖片分享至 LINE · 名片本身不受官網連線影響</div>
+        <p>對方用相機掃此 QR，即可開啟你的電子名片。</p>
+        <div class="hint">長按 QR 可儲存圖片分享至 LINE</div>
       </div>
     </div>
 
@@ -335,34 +335,18 @@
   load(()=>genQR("qr-social",cardUrl));
   window.__CARD_QR_URL__ = cardUrl;
 })();
-// 官網 http 容錯
+// 官網連結靜默容錯（不顯示提示，保持版面乾淨）
 (function(){
   const OFFICIAL_HTTP="http://www.culroc.org.tw";
-  const OFFICIAL_HTTPS="https://www.culroc.org.tw";
-  const toast=document.getElementById('toast');
-  let t=null;
-  function showToast(m){ if(!toast) return; toast.textContent=m; toast.classList.add('show'); clearTimeout(t); t=setTimeout(()=>toast.classList.remove('show'),4200); }
   document.addEventListener('click', function(e){
     const a=e.target.closest('a.official-link');
     if(!a) return;
     const href=a.getAttribute('href')||'';
     if(href.startsWith('https://www.culroc.org.tw')){
       e.preventDefault();
-      showToast('官網 https 暫時連線逾時，已改用 http 開啟');
       window.open(OFFICIAL_HTTP,'_blank','noopener');
     }
   });
-  setTimeout(()=>{
-    document.querySelectorAll('.official-status').forEach(el=>{
-      el.textContent='(https 暫時逾時)';
-      el.style.color='#c47000';
-    });
-  }, 4200);
-  try{
-    const ctrl=new AbortController();
-    setTimeout(()=>ctrl.abort(), 3800);
-    fetch(OFFICIAL_HTTPS,{mode:'no-cors', signal:ctrl.signal}).catch(()=>{});
-  }catch(e){}
 })();
 
 // vCard - 下載後開啟加入
