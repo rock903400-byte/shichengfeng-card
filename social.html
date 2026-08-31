@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>石誠風｜社交分享版 電子名片</title>
+<meta name="description" content="中華民國儲蓄互助協會 中區辦事處督導 石誠風 0966-456400 social share" />
+<meta property="og:title" content="石誠風 - 中華民國儲蓄互助協會 中區辦事處督導" />
+<meta property="og:description" content="0966-456400｜rock9034@culroc.org.tw｜掃碼一鍵加入聯絡人" />
+<meta property="og:type" content="profile" />
+<meta property="og:image" content="logo.png" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:#f0f3f7;font-family:"Noto Sans TC",system-ui,-apple-system,"PingFang TC","Microsoft JhengHei",sans-serif;color:#1a2a3a}
+  a{color:inherit;text-decoration:none}
+  .wrap{
+    min-height:100dvh;
+    display:flex;justify-content:center;
+    padding:16px;
+    background:
+      radial-gradient(900px 500px at 50% 0%, #ffffff 0%, #e6eef6 45%, #d6e1ee 100%);
+  }
+  .sheet{
+    width:100%;max-width:420px;
+    background:#fff;
+    border-radius:24px;
+    overflow:hidden;
+    box-shadow:0 20px 50px rgba(30,50,80,.14),0 4px 14px rgba(30,50,80,.08);
+  }
+  .cover{
+    height:88px;
+    background: linear-gradient(135deg,#1a3a5a 0%,#2a5a8a 55%,#3a7ab5 100%);
+    position:relative;
+  }
+  .cover::after{
+    content:"";position:absolute;inset:0;
+    background: radial-gradient(500px 200px at 80% 0%, rgba(255,255,255,.18), transparent 60%);
+  }
+  .brand{
+    position:absolute;left:16px;bottom:-36px;
+    display:flex;align-items:center;gap:10px;z-index:2;
+  }
+  .logo-circle{
+    width:76px;height:76px;
+    background:#fff;
+    border-radius:18px;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 8px 20px rgba(0,0,0,.12),0 0 0 1px rgba(0,0,0,.04);
+    padding:8px;
+  }
+  .logo-circle img{width:100%;height:100%;object-fit:contain}
+  .org-mini{
+    background:#fff;
+    border-radius:999px;
+    padding:7px 12px;
+    font-size:11px;font-weight:600;letter-spacing:.04em;
+    color:#1a3a5a;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+    margin-top:18px;
+    white-space:nowrap;
+  }
+  .hero{
+    padding:52px 22px 0;
+    text-align:center;
+  }
+  .name{
+    font-family:"Noto Serif TC",serif;
+    font-size:34px;font-weight:700;
+    letter-spacing:.18em;
+    margin:0 0 4px;
+    color:#12233a;
+  }
+  .name-en{
+    font-size:13px;letter-spacing:.12em;color:#6b7fa0;font-weight:500;text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  .title{
+    display:inline-block;
+    background:#eef3fb;color:#2a4a7a;
+    font-size:13px;font-weight:600;letter-spacing:.12em;
+    padding:6px 14px;border-radius:999px;
+    margin-top:4px;
+  }
+  .title-en{font-size:11px;letter-spacing:.04em;color:#7a8aa0;margin-top:6px}
+  .divider{height:1px;background:#eef1f5;margin:18px 22px 0}
+  .contact{
+    padding:14px 22px 0;
+    display:flex;flex-direction:column;gap:12px;
+  }
+  .citem{
+    display:flex;align-items:flex-start;gap:12px;
+    font-size:13px;line-height:1.5;
+  }
+  .cicon{
+    width:36px;height:36px;flex-shrink:0;
+    background:#f2f6fb;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;
+    color:#2a5a8a;
+  }
+  .cicon svg{width:18px;height:18px}
+  .clabel{font-size:11px;color:#8aa0b8;letter-spacing:.06em}
+  .cvalue{font-weight:500;color:#1a2a3a;word-break:break-all}
+  .cvalue a{color:#1a2a3a}
+  .cvalue a:hover{color:#1a4d8a;text-decoration:underline}
+  /* QR */
+  .qr-block{
+    margin:18px 22px 0;
+    background:#f8fafd;
+    border:1px solid #e6eef6;
+    border-radius:18px;
+    padding:16px;
+    display:flex;align-items:center;gap:16px;
+  }
+  .qr-box{
+    width:124px;height:124px;
+    background:#fff;border-radius:12px;
+    padding:8px;
+    border:1px solid #e6eef0;
+    flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .qr-box canvas,.qr-box img{width:100%!important;height:100%!important}
+  .qr-info{flex:1}
+  .qr-info h3{margin:0 0 6px;font-size:13px;font-weight:700;color:#1a2a3a}
+  .qr-info p{margin:0;font-size:12px;line-height:1.55;color:#5a6f8a}
+  .qr-info .hint{margin-top:8px;font-size:11px;color:#8aa0b8}
+  /* Actions */
+  .actions{
+    padding:18px 22px 22px;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .btn{
+    display:flex;align-items:center;justify-content:center;gap:8px;
+    padding:14px 16px;
+    border-radius:14px;
+    font-size:15px;font-weight:700;
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:.15s;
+  }
+  .btn-primary{background:#1a3a5a;color:#fff;box-shadow:0 6px 16px rgba(26,58,90,.18)}
+  .btn-primary:hover{background:#142d47;transform:translateY(-1px)}
+  .btn-secondary{background:#fff;color:#1a3a5a;border-color:#dce4f0}
+  .btn-secondary:hover{background:#f4f7fb}
+  .btn-ghost{background:#eef3fb;color:#2a4a7a;border-color:#dde8f5}
+  .btn-ghost:hover{background:#e6eef6}
+  .btn svg{width:18px;height:18px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .vcard-hint{margin-top:2px}
+  .toast{
+    position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);
+    background:#1a2a3a;color:#fff;
+    padding:12px 16px;border-radius:12px;
+    font-size:13px;line-height:1.5;
+    box-shadow:0 10px 30px rgba(0,0,0,.22);
+    opacity:0;visibility:hidden;transition:all .28s ease;
+    max-width:min(92vw, 400px);text-align:center;z-index:9999;
+  }
+  .toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+  .footer{
+    padding:16px 22px 22px;
+    text-align:center;
+    font-size:11px;line-height:1.6;color:#8aa0b8;
+  }
+  .footer a{color:#5a78a0;text-decoration:underline}
+  .switch{
+    margin:0 22px 0;
+    display:flex;align-items:center;justify-content:center;
+    font-size:11px;color:#8aa0b8;gap:8px;
+  }
+  .switch a{color:#2a5a8a;font-weight:600}
+  /* 手機優化 */
+  @media (max-width:480px){
+    .wrap{padding:12px}
+    .sheet{border-radius:18px}
+    .cover{height:76px}
+    .logo-circle{width:68px;height:68px;border-radius:16px}
+    .org-mini{font-size:10.5px;padding:6px 10px}
+    .hero{padding:44px 16px 0}
+    .name{font-size:30px;letter-spacing:.14em}
+    .name-en{font-size:11px}
+    .title{font-size:12px}
+    .contact{padding:12px 16px 0;gap:10px}
+    .citem{font-size:12.5px}
+    .cvalue{font-size:13px}
+    .qr-block{margin:16px 16px 0;padding:14px;gap:14px}
+    .qr-box{width:110px;height:110px}
+    .actions{padding:16px 16px 22px;gap:10px}
+    .btn{min-height:48px;padding:14px 14px;font-size:14.5px}
+    .btn svg{width:17px;height:17px}
+    .grid2{gap:10px}
+    .footer{padding:14px 16px 18px;font-size:10.5px}
+  }
+  @media (max-width:360px){
+    .name{font-size:27px}
+    .qr-block{flex-direction:column;text-align:center}
+    .qr-info{width:100%}
+    .grid2{grid-template-columns:1fr}
+  }
+  /* compact for small height */
+  @media (max-height:780px){
+    .cover{height:72px}
+    .hero{padding-top:42px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="sheet">
+    <div class="cover">
+      <div class="brand">
+        <div class="logo-circle"><img src="logo.png" alt="CULROC Logo"></div>
+        <div class="org-mini">中華民國儲蓄互助協會</div>
+      </div>
+    </div>
+
+    <div class="hero">
+      <h1 class="name">石誠風</h1>
+      <div class="name-en">Cheng Feng Shih · Shi, Cheng-Feng</div>
+      <div class="title">中區辦事處督導</div>
+      <div class="title-en">Central District Office · Supervisor</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="contact">
+      <div class="citem">
+        <div class="cicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.68A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12 1.21.4 2.39.82 3.52a2 2 0 0 1-.57 2.06L8.09 10.57a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.06-.57c1.13.42 2.31.7 3.52.82A2 2 0 0 1 22 16.92z"/></svg></div>
+        <div style="flex:1">
+          <div class="clabel">手機 Mobile</div>
+          <div class="cvalue"><a href="tel:+886966456400">0966-456400</a> <span style="color:#8aa0b8;font-weight:400">· 點擊撥號</span></div>
+          <div class="cvalue" style="font-size:12px;color:#5a6f8a;margin-top:2px">市話 <a href="tel:+886422917272">04-22917272</a> #8606 · 傳真 04-22936903</div>
+        </div>
+      </div>
+
+      <div class="citem">
+        <div class="cicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div style="flex:1">
+          <div class="clabel">電子信箱 E-mail</div>
+          <div class="cvalue"><a href="mailto:rock9034@culroc.org.tw">rock9034@culroc.org.tw</a></div>
+        </div>
+      </div>
+
+      <div class="citem">
+        <div class="cicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div style="flex:1">
+          <div class="clabel">地址 Address</div>
+          <div class="cvalue">404530 台中市北區北平路1段33號<br><span style="font-size:12px;color:#5a6f8a">No.33, Sec.1, Beiping Rd., North Dist., Taichung 404530, Taiwan</span></div>
+          <div style="margin-top:4px"><a href="https://maps.google.com/?q=404530台中市北區北平路1段33號" target="_blank" rel="noopener" style="font-size:12px;color:#2a5a8a;text-decoration:underline">開啟地圖導航 →</a></div>
+        </div>
+      </div>
+
+      <div class="citem">
+        <div class="cicon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></div>
+        <div style="flex:1">
+          <div class="clabel">官網 Website</div>
+          <div class="cvalue"><a class="official-link" href="http://www.culroc.org.tw" target="_blank" rel="noopener">www.culroc.org.tw</a> <span style="color:#8aa0b8;font-size:11px">· 統編 04141621</span> <span class="official-status" style="font-size:10px;color:#8aa0b8"></span></div>
+          <div style="font-size:11px;color:#8aa0b8">CREDIT UNION LEAGUE OF THE REPUBLIC OF CHINA <span style="color:#c47000">· https 暫時逾時，請用 http</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="qr-block">
+      <div class="qr-box" id="qr-social"></div>
+      <div class="qr-info">
+        <h3>掃碼開啟名片</h3>
+        <p>對方用相機掃此 QR，即可開啟你的電子名片，再從名片內用 <b>http</b> 開啟官網（已自動容錯 443 逾時）。</p>
+        <div class="hint">長按 QR 可儲存圖片分享至 LINE · 名片本身不受官網連線影響</div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <a class="btn btn-primary" href="tel:+886966456400">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.68A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12 1.21.4 2.39.82 3.52a2 2 0 0 1-.57 2.06L8.09 10.57a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.06-.57c1.13.42 2.31.7 3.52.82A2 2 0 0 1 22 16.92z"/></svg>
+        立即撥打 0966-456400
+      </a>
+      <div class="grid2">
+        <a class="btn btn-secondary" href="mailto:rock9034@culroc.org.tw">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          寄 Email
+        </a>
+        <a class="btn btn-secondary" href="https://maps.google.com/?q=404530台中市北區北平路1段33號" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 10c0 7-9 13-9 13S3 17 3 10a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          導航
+        </a>
+      </div>
+      <button class="btn btn-ghost" id="btn-vcard2" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+        加入通訊錄
+      </button>
+      <div class="vcard-hint" style="text-align:center;font-size:11px;color:#8aa0b8;line-height:1.5">點擊會下載 .vcf，開啟後按「加入聯絡人」即可儲存</div>
+      <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    </div>
+
+
+  </div>
+</div>
+
+<script>
+// QR 先連名片本身：掃碼回到本頁（社交版），官網改由按鈕 http 開啟
+(function(){
+  const CANONICAL_CARD_URL = "https://shichengfeng-card.pages.dev/social.html";
+  function getCardUrl(){
+    try{
+      if(location.protocol === 'http:' || location.protocol === 'https:'){
+        let url = location.href.split('#')[0].split('?')[0];
+        return url;
+      }
+    }catch(e){}
+    return CANONICAL_CARD_URL;
+  }
+  const cardUrl = getCardUrl();
+  function genQR(id, text){
+    const el=document.getElementById(id);
+    if(!el) return;
+    if(window.QRCode){
+      new QRCode(el,{text:text,width:124,height:124,correctLevel:QRCode.CorrectLevel.M});
+      return;
+    }
+    const img=document.createElement('img');
+    img.alt="QR "+text;
+    img.src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&data="+encodeURIComponent(text)+"&color=1a3a5a&bgcolor=ffffff";
+    img.style.width="100%";img.style.height="100%";
+    img.onerror=function(){ el.textContent="QR"; el.style.fontSize="11px"; el.style.color="#999"; };
+    el.appendChild(img);
+  }
+  function load(cb){
+    if(window.QRCode) return cb();
+    const s=document.createElement('script');
+    s.src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js";
+    s.onload=cb; s.onerror=cb;
+    document.head.appendChild(s);
+  }
+  load(()=>genQR("qr-social",cardUrl));
+  window.__CARD_QR_URL__ = cardUrl;
+})();
+// 官網 http 容錯
+(function(){
+  const OFFICIAL_HTTP="http://www.culroc.org.tw";
+  const OFFICIAL_HTTPS="https://www.culroc.org.tw";
+  const toast=document.getElementById('toast');
+  let t=null;
+  function showToast(m){ if(!toast) return; toast.textContent=m; toast.classList.add('show'); clearTimeout(t); t=setTimeout(()=>toast.classList.remove('show'),4200); }
+  document.addEventListener('click', function(e){
+    const a=e.target.closest('a.official-link');
+    if(!a) return;
+    const href=a.getAttribute('href')||'';
+    if(href.startsWith('https://www.culroc.org.tw')){
+      e.preventDefault();
+      showToast('官網 https 暫時連線逾時，已改用 http 開啟');
+      window.open(OFFICIAL_HTTP,'_blank','noopener');
+    }
+  });
+  setTimeout(()=>{
+    document.querySelectorAll('.official-status').forEach(el=>{
+      el.textContent='(https 暫時逾時)';
+      el.style.color='#c47000';
+    });
+  }, 4200);
+  try{
+    const ctrl=new AbortController();
+    setTimeout(()=>ctrl.abort(), 3800);
+    fetch(OFFICIAL_HTTPS,{mode:'no-cors', signal:ctrl.signal}).catch(()=>{});
+  }catch(e){}
+})();
+
+// vCard - 下載後開啟加入
+(function(){
+  const toast=document.getElementById('toast');
+  let t=null;
+  function showToast(msg){
+    if(!toast) return;
+    toast.textContent=msg; toast.classList.add('show');
+    clearTimeout(t); t=setTimeout(()=>toast.classList.remove('show'),4000);
+  }
+  document.getElementById('btn-vcard2').addEventListener('click',()=>{
+    const vcf=[
+      "BEGIN:VCARD","VERSION:3.0",
+      "FN:石誠風","N:石;誠風;;;",
+      "ORG;CHARSET=UTF-8:中華民國儲蓄互助協會",
+      "TITLE;CHARSET=UTF-8:中區辦事處督導",
+      "TITLE;LANG=en:Supervisor, Central District Office",
+      "TEL;TYPE=CELL,VOICE:+886966456400",
+      "TEL;TYPE=WORK,VOICE:+886422917272",
+      "TEL;TYPE=FAX:+886422936903",
+      "EMAIL;TYPE=WORK,INTERNET:rock9034@culroc.org.tw",
+      "ADR;TYPE=WORK;CHARSET=UTF-8:;;404530台中市北區北平路1段33號;台中市;404530;台灣",
+      "ADR;TYPE=WORK:;;No.33, Sec.1, Beiping Rd., North Dist., Taichung City 404530;Taichung;404530;Taiwan",
+      "URL:http://www.culroc.org.tw",
+      "NOTE:中華民國儲蓄互助協會 統一編號 04141621",
+      "END:VCARD"
+    ].join("\r\n");
+    const blob=new Blob([vcf],{type:"text/vcard;charset=utf-8"});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;a.download="石誠風_CULROC.vcf";
+    document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(url);a.remove()},1200);
+    const isiOS=/iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isAnd=/Android/.test(navigator.userAgent);
+    if(isiOS) showToast("已下載 .vcf，請至「檔案」或下載項目開啟，點選「分享」→「加入聯絡人」");
+    else if(isAnd) showToast("已下載 .vcf，請在通知列或下載項目開啟，點「加入聯絡人」");
+    else showToast("已下載聯絡人檔案，開啟後按「加入聯絡人」即可儲存");
+  });
+})();
+</script>
+</body>
+</html>
+
+<!-- mobile-optimized v20250831 -->
