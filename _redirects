@@ -1,2 +1,5 @@
 /wind/* https://wind-card.pages.dev/:splat 301
 /wind https://wind-card.pages.dev/ 301
+/wenzheng/* https://wind-card.pages.dev/wenzheng/:splat 301
+/wenzheng https://wind-card.pages.dev/wenzheng/ 301
+
