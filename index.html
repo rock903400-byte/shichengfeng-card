@@ -701,6 +701,12 @@
                   el.style.left = 'auto';
                   el.style.boxShadow = '0 12px 30px rgba(30,40,60,.12), 0 0 0 1px rgba(0,0,0,.06) inset';
                 }
+                const nameEn = clonedDoc.querySelector('.name.en');
+                if(nameEn){
+                  nameEn.style.setProperty('background', 'none', 'important');
+                  nameEn.style.setProperty('color', '#1a2a3a', 'important');
+                  nameEn.style.setProperty('-webkit-background-clip', 'border-box', 'important');
+                }
               }
             });
 
