@@ -809,6 +809,40 @@
         document.head.appendChild(s);
       }
 
+      function showImagePreviewModal(dataUrl, fileName){
+        let modal = document.getElementById('card-img-modal');
+        if(!modal){
+          modal = document.createElement('div');
+          modal.id = 'card-img-modal';
+          modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(6px);z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;opacity:0;transition:opacity .25s ease;';
+          modal.innerHTML = `
+            <div style="background:#fff;border-radius:16px;max-width:min(90vw,440px);width:100%;padding:16px;box-shadow:0 20px 40px rgba(0,0,0,.35);text-align:center;position:relative">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+                <span style="font-size:14px;font-weight:700;color:#1a2a3a">名片圖檔已直接下載</span>
+                <button id="close-img-modal" style="background:#f0f2f5;border:none;border-radius:50%;width:28px;height:28px;font-size:14px;cursor:pointer;color:#666;line-height:28px;padding:0">✕</button>
+              </div>
+              <div style="max-height:60vh;overflow:auto;border-radius:12px;background:#f8fafd;padding:10px;border:1px solid #eef1f5">
+                <img id="card-img-preview" src="" alt="名片預覽" style="width:100%;height:auto;display:block;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.08)">
+              </div>
+              <div style="margin-top:12px;font-size:12px;color:#6b7a8a;line-height:1.5">
+                💡 手機用戶亦可<strong>長按上方圖片</strong>直接存入相簿
+              </div>
+            </div>
+          `;
+          document.body.appendChild(modal);
+          modal.addEventListener('click', (e)=>{
+            if(e.target === modal || e.target.id === 'close-img-modal'){
+              modal.style.opacity = '0';
+              setTimeout(()=> modal.style.display = 'none', 250);
+            }
+          });
+        }
+        const img = document.getElementById('card-img-preview');
+        if(img) img.src = dataUrl;
+        modal.style.display = 'flex';
+        requestAnimationFrame(()=> modal.style.opacity = '1');
+      }
+
       let originalBtnHtml = '';
       btnSaveImg.addEventListener('click', ()=>{
         originalBtnHtml = btnSaveImg.innerHTML;
@@ -838,35 +872,21 @@
               }
             });
 
-            canvas.toBlob(async (blob)=>{
-              btnSaveImg.innerHTML = originalBtnHtml;
-              btnSaveImg.disabled = false;
-              if(!blob) return;
+            const dataUrl = canvas.toDataURL("image/png");
+            btnSaveImg.innerHTML = originalBtnHtml;
+            btnSaveImg.disabled = false;
 
-              const file = new File([blob], fileName, { type: "image/png" });
-              if(navigator.canShare && navigator.canShare({ files: [file] })){
-                try{
-                  await navigator.share({
-                    files: [file],
-                    title: fileName,
-                    text: "石誠風 Wind 電子名片"
-                  });
-                  showToast("已喚起分享，可點選「儲存影像」存至相簿！");
-                  return;
-                }catch(err){
-                  if(err.name === 'AbortError') return;
-                }
-              }
+            // 1. 直接觸發瀏覽器原生物理下載
+            const a = document.createElement('a');
+            a.href = dataUrl;
+            a.download = fileName;
+            document.body.appendChild(a);
+            a.click();
+            setTimeout(()=>{ a.remove(); }, 1000);
+            showToast("名片圖檔已開始直接下載！");
 
-              const url = URL.createObjectURL(blob);
-              const a = document.createElement('a');
-              a.href = url;
-              a.download = fileName;
-              document.body.appendChild(a);
-              a.click();
-              setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 1500);
-              showToast("名片圖檔已儲存！請至相簿或下載項目檢視");
-            }, "image/png");
+            // 2. 開啟高清圖片預覽浮層（手機端支援長按存入相簿）
+            showImagePreviewModal(dataUrl, fileName);
 
           }catch(err){
             console.error(err);
