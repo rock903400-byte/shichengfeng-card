@@ -1,0 +1,16 @@
+{
+  "name": "石誠風｜中華民國儲蓄互助協會",
+  "short_name": "石誠風名片",
+  "start_url": "./",
+  "scope": "./",
+  "display": "browser",
+  "display_override": ["browser"],
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

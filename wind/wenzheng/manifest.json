@@ -1,0 +1,16 @@
+{
+  "name": "黃文政 Wen-Zheng Huang｜跨產業接案開發",
+  "short_name": "文政名片",
+  "start_url": "./",
+  "scope": "./",
+  "display": "browser",
+  "display_override": ["browser"],
+  "icons": [
+    {
+      "src": "logo.png",
+      "sizes": "192x192 512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
