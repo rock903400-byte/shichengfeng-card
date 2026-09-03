@@ -860,9 +860,22 @@
               backgroundColor: null,
               logging: false,
               onclone: (clonedDoc)=>{
+                const card = clonedDoc.getElementById('card');
+                if(card){
+                  card.style.setProperty('transform', 'none', 'important');
+                  card.style.setProperty('-webkit-transform', 'none', 'important');
+                  card.classList.remove('flipped');
+                }
+                const scene = clonedDoc.querySelector('.card-scene');
+                if(scene){
+                  scene.style.setProperty('perspective', 'none', 'important');
+                }
                 const el = clonedDoc.getElementById(targetId);
                 if(el){
-                  el.style.transform = 'none';
+                  el.style.setProperty('transform', 'none', 'important');
+                  el.style.setProperty('-webkit-transform', 'none', 'important');
+                  el.style.setProperty('backface-visibility', 'visible', 'important');
+                  el.style.setProperty('-webkit-backface-visibility', 'visible', 'important');
                   el.style.position = 'relative';
                   el.style.top = 'auto';
                   el.style.left = 'auto';
