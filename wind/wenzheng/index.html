@@ -102,7 +102,7 @@
     margin-bottom:14px;
   }
   .brand{
-    display:flex;align-items:center;gap:12px;min-width:0;
+    display:flex;align-items:center;gap:12px;min-width:0;flex:1;
   }
   .brand .logo{
     width:64px;height:64px;flex-shrink:0;
@@ -114,8 +114,11 @@
     overflow:hidden;
   }
   .org-name{
-    line-height:1.1;
-    white-space:nowrap;
+    line-height:1.15;
+    min-width:0;flex:1;
+  }
+  .qr-col{
+    display:flex;flex-direction:column;align-items:center;flex-shrink:0;
   }
   .org-name .zh{
     font-family:"Noto Serif TC", serif;
@@ -380,10 +383,10 @@
     .header{margin:4px 0 12px}
     .face{padding:16px 14px 14px}
     .brand .logo{width:48px;height:48px;border-radius:10px}
-    .org-name .zh{font-size:15px;letter-spacing:.03em}
-    .org-name .zh small{font-size:10px}
-    .org-name .en{font-size:10px;line-height:1.2}
-    .qrcode-wrap{width:80px;height:80px;padding:5px}
+    .org-name .zh{font-size:14px;letter-spacing:.02em;white-space:normal}
+    .org-name .zh small{font-size:9.5px}
+    .org-name .en{font-size:10px;line-height:1.2;white-space:normal}
+    .qrcode-wrap{width:76px;height:76px;padding:4px}
     .top{padding-bottom:10px;margin-bottom:10px}
     .body{flex-direction:column;gap:0;padding-top:0}
     .left{flex:none;width:100%;padding-bottom:12px;margin-bottom:12px;border-bottom:1px dashed #e8eef4}
@@ -464,7 +467,7 @@
               <div class="zh">跨產業接案開發<small>CROSS-INDUSTRY DEVELOPMENT</small></div>
             </div>
           </div>
-          <div style="display:flex;flex-direction:column;align-items:center">
+          <div class="qr-col">
             <div class="qrcode-wrap" id="qr-front"></div>
             <div class="qr-caption">名片 QR</div>
           </div>
@@ -510,7 +513,7 @@
               <div class="en">CROSS-INDUSTRY<br>DEVELOPMENT</div>
             </div>
           </div>
-          <div style="display:flex;flex-direction:column;align-items:center">
+          <div class="qr-col">
             <div class="qrcode-wrap" id="qr-back"></div>
             <div class="qr-caption">Card QR</div>
           </div>
@@ -862,16 +865,26 @@
               onclone: (clonedDoc)=>{
                 const card = clonedDoc.getElementById('card');
                 if(card){
+                  card.style.setProperty('width', '540px', 'important');
+                  card.style.setProperty('max-width', '540px', 'important');
+                  card.style.setProperty('min-width', '540px', 'important');
                   card.style.setProperty('transform', 'none', 'important');
                   card.style.setProperty('-webkit-transform', 'none', 'important');
                   card.classList.remove('flipped');
                 }
-                const scene = clonedDoc.querySelector('.card-scene');
+                const scene = clonedDoc.querySelector('.card-scene') || clonedDoc.getElementById('scene');
                 if(scene){
+                  scene.style.setProperty('width', '540px', 'important');
+                  scene.style.setProperty('max-width', '540px', 'important');
                   scene.style.setProperty('perspective', 'none', 'important');
                 }
                 const el = clonedDoc.getElementById(targetId);
                 if(el){
+                  el.style.setProperty('width', '540px', 'important');
+                  el.style.setProperty('max-width', '540px', 'important');
+                  el.style.setProperty('min-width', '540px', 'important');
+                  el.style.setProperty('padding', '22px 24px 18px', 'important');
+                  el.style.setProperty('overflow', 'visible', 'important');
                   el.style.setProperty('transform', 'none', 'important');
                   el.style.setProperty('-webkit-transform', 'none', 'important');
                   el.style.setProperty('backface-visibility', 'visible', 'important');

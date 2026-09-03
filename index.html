@@ -102,7 +102,7 @@
     margin-bottom:14px;
   }
   .brand{
-    display:flex;align-items:center;gap:12px;min-width:0;
+    display:flex;align-items:center;gap:12px;min-width:0;flex:1;
   }
   .brand img{
     width:64px;height:64px;object-fit:contain;
@@ -112,8 +112,11 @@
     border-radius:6px;
   }
   .org-name{
-    line-height:1.1;
-    white-space:nowrap;
+    line-height:1.15;
+    min-width:0;flex:1;
+  }
+  .qr-col{
+    display:flex;flex-direction:column;align-items:center;flex-shrink:0;
   }
   .org-name .zh{
     font-family:"Noto Serif TC", serif;
@@ -274,9 +277,9 @@
     .header{margin:4px 0 12px}
     .face{padding:16px 14px 14px}
     .brand img{width:44px;height:44px}
-    .org-name .zh{font-size:16px;letter-spacing:.04em}
-    .org-name .en{font-size:10px;line-height:1.2}
-    .qrcode-wrap{width:80px;height:80px;padding:5px}
+    .org-name .zh{font-size:15px;letter-spacing:.03em;white-space:normal}
+    .org-name .en{font-size:10px;line-height:1.2;white-space:normal}
+    .qrcode-wrap{width:76px;height:76px;padding:4px}
     .top{padding-bottom:10px;margin-bottom:10px}
     /* 手機改為直式堆疊，解決左右擠壓與 email 換行問題 */
     .body{flex-direction:column;gap:0;padding-top:0}
@@ -333,7 +336,7 @@
               <div class="zh">中華民國儲蓄互助協會</div>
             </div>
           </div>
-          <div style="display:flex;flex-direction:column;align-items:center">
+          <div class="qr-col">
             <div class="qrcode-wrap" id="qr-front"></div>
             <div class="qr-caption">名片 QR</div>
           </div>
@@ -366,7 +369,7 @@
               <div class="en">CREDIT UNION LEAGUE<br>OF THE REPUBLIC OF CHINA</div>
             </div>
           </div>
-          <div style="display:flex;flex-direction:column;align-items:center">
+          <div class="qr-col">
             <div class="qrcode-wrap" id="qr-back"></div>
             <div class="qr-caption">Card QR</div>
           </div>
@@ -669,16 +672,26 @@
               onclone: (clonedDoc)=>{
                 const card = clonedDoc.getElementById('card');
                 if(card){
+                  card.style.setProperty('width', '540px', 'important');
+                  card.style.setProperty('max-width', '540px', 'important');
+                  card.style.setProperty('min-width', '540px', 'important');
                   card.style.setProperty('transform', 'none', 'important');
                   card.style.setProperty('-webkit-transform', 'none', 'important');
                   card.classList.remove('flipped');
                 }
-                const scene = clonedDoc.querySelector('.card-scene');
+                const scene = clonedDoc.querySelector('.card-scene') || clonedDoc.getElementById('scene');
                 if(scene){
+                  scene.style.setProperty('width', '540px', 'important');
+                  scene.style.setProperty('max-width', '540px', 'important');
                   scene.style.setProperty('perspective', 'none', 'important');
                 }
                 const el = clonedDoc.getElementById(targetId);
                 if(el){
+                  el.style.setProperty('width', '540px', 'important');
+                  el.style.setProperty('max-width', '540px', 'important');
+                  el.style.setProperty('min-width', '540px', 'important');
+                  el.style.setProperty('padding', '22px 24px 18px', 'important');
+                  el.style.setProperty('overflow', 'visible', 'important');
                   el.style.setProperty('transform', 'none', 'important');
                   el.style.setProperty('-webkit-transform', 'none', 'important');
                   el.style.setProperty('backface-visibility', 'visible', 'important');
