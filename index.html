@@ -176,6 +176,16 @@
     margin-top:8px;
   }
   .phone.en{font-size:16px}
+  .phone a{border-bottom:1px dashed transparent}
+  .phone a:hover{color:#1a4d8a;border-bottom-color:#1a4d8a}
+  .face a.card-link{
+    display:inline;
+    padding:0 2px;
+    margin:0;
+    touch-action:manipulation;
+    position:relative;
+    z-index:2;
+  }
 
   .right{
     flex:1;
@@ -330,15 +340,15 @@
           <div class="left">
             <div class="name">石誠風</div>
             <div class="title">中區辦事處督導</div>
-            <div class="phone"><a href="tel:+886966456400">0966-456400</a></div>
+            <div class="phone"><a class="card-link" href="tel:+886966456400">0966-456400</a></div>
           </div>
           <div class="right">
             <div class="addr">404530台中市北區北平路1段33號</div>
-            <div><span class="label">電子信箱：</span><a href="mailto:rock9034@culroc.org.tw">rock9034@culroc.org.tw</a></div>
+            <div><span class="label">電子信箱：</span><a class="card-link" href="mailto:rock9034@culroc.org.tw">rock9034@culroc.org.tw</a></div>
             <div><span class="label">統一編號：</span>04141621</div>
-            <div><a class="official-link" href="http://www.culroc.org.tw" target="_blank" rel="noopener">www.culroc.org.tw</a></div>
+            <div><a class="official-link card-link" href="http://www.culroc.org.tw" target="_blank" rel="noopener">www.culroc.org.tw</a></div>
             <div style="margin-top:6px;color:#6b7a8a;font-size:11px">
-              TEL：<a href="tel:+886422917272">+886-4-22917272</a>#8606<br>
+              TEL：<a class="card-link" href="tel:+886422917272">+886-4-22917272</a>#8606<br>
               FAX：+886-4-22936903
             </div>
           </div>
@@ -363,17 +373,17 @@
           <div class="left">
             <div class="name en">Cheng Feng Shih</div>
             <div class="title en">Central District Office<br>Supervisor</div>
-            <div class="phone en"><a href="tel:+886966456400">0966-456400</a></div>
+            <div class="phone en"><a class="card-link" href="tel:+886966456400">0966-456400</a></div>
             <div style="font-size:10px;color:#999;margin-top:4px">Shi, Cheng-Feng</div>
           </div>
           <div class="right">
             <div>No.33, Sec.1, Beiping Rd.,</div>
             <div>North Dist., Taichung City</div>
             <div>404530, Taiwan (R.O.C)</div>
-            <div style="margin-top:4px">TEL：<a href="tel:+886422917272">+886-4-22917272</a> #8606</div>
+            <div style="margin-top:4px">TEL：<a class="card-link" href="tel:+886422917272">+886-4-22917272</a> #8606</div>
             <div>FAX：+886-4-22936903</div>
-            <div>E-mail：<a href="mailto:rock9034@culroc.org.tw">rock9034@culroc.org.tw</a></div>
-            <div><a class="official-link" href="http://www.culroc.org.tw" target="_blank" rel="noopener">www.culroc.org.tw</a></div>
+            <div>E-mail：<a class="card-link" href="mailto:rock9034@culroc.org.tw">rock9034@culroc.org.tw</a></div>
+            <div><a class="official-link card-link" href="http://www.culroc.org.tw" target="_blank" rel="noopener">www.culroc.org.tw</a></div>
           </div>
         </div>
       </div>
@@ -494,8 +504,12 @@
   }
   function toggleFlip(e){
     if(e && e.target){
-      const interactive = e.target.closest('a, button, input, textarea, select, label');
-      if(interactive && interactive !== btnFlip){
+      const cardLink = e.target.closest('a.card-link');
+      if(cardLink){
+        return;
+      }
+      const otherInteractive = e.target.closest('button, input, textarea, select');
+      if(otherInteractive && otherInteractive !== btnFlip){
         return;
       }
     }

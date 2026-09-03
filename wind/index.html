@@ -13,7 +13,7 @@
 <meta name="description" content="石誠風 Wind｜全端系統架構師 × 跨產業接案工程師。臺中基地、全台遠端，網站/App/API/自動化｜可開發票·可簽約·100%交付原始碼" />
 <meta name="format-detection" content="telephone=yes" />
 <meta property="og:title" content="石誠風 Wind｜跨產業接案開發" />
-<meta property="og:description" content="別人還在對規格書，我已交付可運行的系統。跨產業客製開發，加 LINE 30分免費評估。" />
+<meta property="og:description" content="別人還在對規格書，我已交付可運行的系統。跨產業客製開發，歡迎加 LINE 洽詢。" />
 <meta property="og:type" content="profile" />
 <meta property="og:url" content="https://wind.rock903400.workers.dev/" />
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230891b2'/><path d='M30 35 C 18 35, 12 45, 12 50 C 12 55, 18 65, 30 65 C 44 65, 56 35, 70 35 C 82 35, 88 45, 88 50 C 88 55, 82 65, 70 65 C 56 65, 44 35, 30 35 Z' stroke='%23ffffff' stroke-width='12' stroke-linecap='round' stroke-linejoin='round'/><circle cx='50' cy='50' r='5' fill='%2367e8f9'/></svg>">
@@ -186,6 +186,14 @@
   .phone.en{font-size:16px}
   .phone a{border-bottom:1px dashed transparent}
   .phone a:hover{color:#0891b2;border-bottom-color:#0891b2}
+  .face a.card-link{
+    display:inline;
+    padding:0 2px;
+    margin:0;
+    touch-action:manipulation;
+    position:relative;
+    z-index:2;
+  }
 
   .right{
     flex:1;
@@ -463,14 +471,14 @@
           <div class="left">
             <div class="name">石誠風 <span class="wind">Wind</span></div>
             <div class="title">全端系統架構師<br>跨產業接案工程師</div>
-            <div class="phone"><a href="tel:+886980463400">0980-463-400</a></div>
+            <div class="phone"><a class="card-link" href="tel:+886980463400">0980-463-400</a></div>
             <div style="font-size:10px;color:#6b7a8a;margin-top:4px;letter-spacing:.06em">臺中基地 · 全台遠端合作</div>
           </div>
           <div class="right">
             <div><span class="label">基地：</span>臺中市 · 全台遠端 <span class="pill">統編 54730503</span></div>
-            <div><span class="label">電子信箱：</span><a href="mailto:rock90340@gmail.com">rock90340@gmail.com</a></div>
-            <div><span class="label">作品集：</span><a href="https://wind.rock903400.workers.dev/" target="_blank" rel="noopener">wind.rock903400.workers.dev</a></div>
-            <div><span class="label">LINE：</span><a href="https://line.me/ti/p/~0980463400" target="_blank" rel="noopener">0980463400</a> <span style="color:#8aa0b8">· 30分免費評估</span></div>
+            <div><span class="label">電子信箱：</span><a class="card-link" href="mailto:rock90340@gmail.com">rock90340@gmail.com</a></div>
+            <div><span class="label">作品集：</span><a class="card-link" href="https://wind.rock903400.workers.dev/" target="_blank" rel="noopener">wind.rock903400.workers.dev</a></div>
+            <div><span class="label">LINE：</span><a class="card-link" href="https://line.me/ti/p/~0980463400" target="_blank" rel="noopener">0980463400</a></div>
             <div style="margin-top:6px;color:#5a6f8a;font-size:11px">
               可開發票 · 可簽約 · 100%交付原始碼
             </div>
@@ -509,15 +517,15 @@
           <div class="left">
             <div class="name en">Cheng Feng Shih <span style="font-size:13px;font-weight:700;letter-spacing:.08em;color:#0891b2">Wind</span></div>
             <div class="title en">Full-Stack System Architect<br>Cross-Industry Freelance Engineer</div>
-            <div class="phone en"><a href="tel:+886980463400">0980-463-400</a></div>
+            <div class="phone en"><a class="card-link" href="tel:+886980463400">0980-463-400</a></div>
             <div style="font-size:10px;color:#6b7a8a;margin-top:4px;letter-spacing:.06em">Taichung Base · Remote Island-wide</div>
           </div>
           <div class="right">
             <div>Taichung, Taiwan · Remote cooperation</div>
             <div>Tax ID: 54730503</div>
-            <div style="margin-top:4px">E-mail：<a href="mailto:rock90340@gmail.com">rock90340@gmail.com</a></div>
-            <div>Website：<a href="https://wind.rock903400.workers.dev/" target="_blank" rel="noopener">wind.rock903400.workers.dev</a></div>
-            <div>LINE：<a href="https://line.me/ti/p/~0980463400" target="_blank" rel="noopener">0980463400</a></div>
+            <div style="margin-top:4px">E-mail：<a class="card-link" href="mailto:rock90340@gmail.com">rock90340@gmail.com</a></div>
+            <div>Website：<a class="card-link" href="https://wind.rock903400.workers.dev/" target="_blank" rel="noopener">wind.rock903400.workers.dev</a></div>
+            <div>LINE：<a class="card-link" href="https://line.me/ti/p/~0980463400" target="_blank" rel="noopener">0980463400</a></div>
             <div style="margin-top:6px;color:#5a6f8a;font-size:11px">
               Invoice available · Contract · 100% Source Delivery
             </div>
@@ -683,8 +691,12 @@
   }
   function toggleFlip(e){
     if(e && e.target){
-      const interactive = e.target.closest('a, button, input, textarea, select, label');
-      if(interactive && interactive !== btnFlip){
+      const cardLink = e.target.closest('a.card-link');
+      if(cardLink){
+        return;
+      }
+      const otherInteractive = e.target.closest('button, input, textarea, select');
+      if(otherInteractive && otherInteractive !== btnFlip){
         return;
       }
     }
