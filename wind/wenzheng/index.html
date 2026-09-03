@@ -238,7 +238,9 @@
     display:grid;grid-template-columns:1fr 1fr;gap:10px;
     margin-top:4px;
   }
+  .actions .btn-primary{grid-column:span 2}
   .actions.three{grid-template-columns:1fr 1fr 1fr}
+  @keyframes spin{100%{transform:rotate(360deg)}}
   .btn{
     display:flex;align-items:center;justify-content:center;gap:8px;
     padding:13px 12px;
@@ -558,8 +560,12 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
       加入通訊錄
     </button>
+    <button class="btn btn-ghost" id="btn-save-img" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      儲存名片圖檔
+    </button>
   </div>
-  <div class="vcard-hint">點擊「加入通訊錄」會下載 .vcf 檔案，開啟後按「加入聯絡人」即可儲存</div>
+  <div class="vcard-hint">可點擊「加入通訊錄」儲存電話與統編，或點「儲存名片圖檔」存至手機相簿</div>
 
   <!-- Supplement: 9 services + tech stack — 雙面翻轉（與主卡同步） -->
   <div class="supplement-scene" id="supplement-scene">
@@ -786,6 +792,90 @@
         showToast("已下載聯絡人檔案，開啟後按「加入聯絡人」即可儲存");
       }
     });
+
+    const btnSaveImg = document.getElementById('btn-save-img');
+    if(btnSaveImg){
+      function loadHtml2Canvas(cb){
+        if(window.html2canvas){ cb(); return; }
+        const s = document.createElement('script');
+        s.src = "https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js";
+        s.onload = cb;
+        s.onerror = ()=> {
+          btnSaveImg.innerHTML = originalBtnHtml;
+          btnSaveImg.disabled = false;
+          alert("圖檔生成模組載入失敗，請確認網路連線。");
+        };
+        document.head.appendChild(s);
+      }
+
+      let originalBtnHtml = '';
+      btnSaveImg.addEventListener('click', ()=>{
+        originalBtnHtml = btnSaveImg.innerHTML;
+        btnSaveImg.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:18px;height:18px;animation:spin 1s linear infinite"><circle cx="12" cy="12" r="9" stroke-dasharray="28" stroke-linecap="round"/></svg> 生成中...';
+        btnSaveImg.disabled = true;
+
+        loadHtml2Canvas(async ()=>{
+          try{
+            const targetId = flipped ? 'face-back' : 'face-front';
+            const targetEl = document.getElementById(targetId);
+            const fileName = flipped ? "WenZhengHuang_Card.png" : "黃文政_電子名片.png";
+
+            const canvas = await html2canvas(targetEl, {
+              scale: 3,
+              useCORS: true,
+              backgroundColor: null,
+              logging: false,
+              onclone: (clonedDoc)=>{
+                const el = clonedDoc.getElementById(targetId);
+                if(el){
+                  el.style.transform = 'none';
+                  el.style.position = 'relative';
+                  el.style.top = 'auto';
+                  el.style.left = 'auto';
+                  el.style.boxShadow = '0 12px 30px rgba(30,40,60,.12), 0 0 0 1px rgba(0,0,0,.06) inset';
+                }
+              }
+            });
+
+            canvas.toBlob(async (blob)=>{
+              btnSaveImg.innerHTML = originalBtnHtml;
+              btnSaveImg.disabled = false;
+              if(!blob) return;
+
+              const file = new File([blob], fileName, { type: "image/png" });
+              if(navigator.canShare && navigator.canShare({ files: [file] })){
+                try{
+                  await navigator.share({
+                    files: [file],
+                    title: fileName,
+                    text: "黃文政 Wen-Zheng Huang 電子名片"
+                  });
+                  showToast("已喚起分享，可點選「儲存影像」存至相簿！");
+                  return;
+                }catch(err){
+                  if(err.name === 'AbortError') return;
+                }
+              }
+
+              const url = URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = fileName;
+              document.body.appendChild(a);
+              a.click();
+              setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 1500);
+              showToast("名片圖檔已儲存！請至相簿或下載項目檢視");
+            }, "image/png");
+
+          }catch(err){
+            console.error(err);
+            btnSaveImg.innerHTML = originalBtnHtml;
+            btnSaveImg.disabled = false;
+            alert("圖檔生成失敗，請直接使用手機截圖。");
+          }
+        });
+      });
+    }
   })();
 </script>
 </body>
