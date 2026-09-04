@@ -1,5 +1,6 @@
-/wind/* https://wind-card.pages.dev/:splat 301
-/wind https://wind-card.pages.dev/ 301
+/wind/* https://wind.rock903400.workers.dev/:splat 301
+/wind https://wind.rock903400.workers.dev/ 301
+# wenzheng 為員工卡，主站無此路由，維持獨立卡片網域
 /wenzheng/* https://wind-card.pages.dev/wenzheng/:splat 301
 /wenzheng https://wind-card.pages.dev/wenzheng/ 301
 
