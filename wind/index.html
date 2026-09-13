@@ -52,7 +52,7 @@
     margin:0;font-size:15px;font-weight:600;letter-spacing:0.08em;color:#2b3a4a;
     display:flex;align-items:center;gap:8px;
   }
-  .header h1 span{font-size:12px;font-weight:400;color:#6b7a8a;border:1px solid #d0d9e2;padding:2px 8px;border-radius:999px;background:#fff}
+  .header h1 .badge{font-size:12px;font-weight:400;color:#6b7a8a;border:1px solid #d0d9e2;padding:2px 8px;border-radius:999px;background:#fff}
   .scene{
     width:100%;max-width:var(--card-w);
     perspective:1200px;
@@ -408,7 +408,7 @@
     .hint{flex-wrap:wrap;gap:6px;font-size:11px}
     .hint button{min-height:36px;padding:7px 14px}
     .header h1{font-size:13px}
-    .header h1 span{display:none}
+    .header h1 .badge{display:none}
     .supplement-scene{margin-top:14px}
     .supplement-head{padding:12px 14px 0}
     .svc-grid{padding:10px 10px 0;gap:6px}
@@ -442,8 +442,8 @@
 <body>
 <div class="page">
   <div class="header">
-    <h1>Wind 電子名片 <span>Digital Business Card</span></h1>
-    <div style="font-size:11px;color:#8a9aaa">點擊卡片可翻面</div>
+    <h1><span data-en="Wind Digital Business Card">Wind 電子名片</span> <span class="badge" data-en="">Digital Business Card</span></h1>
+    <div style="font-size:11px;color:#8a9aaa" data-en="Tap to flip">點擊卡片可翻面</div>
   </div>
 
   <div class="scene" id="scene">
@@ -686,13 +686,14 @@
   const supplementFront = document.getElementById('supplement-front');
   const supplementBack = document.getElementById('supplement-back');
   let flipped = false;
-  // 翻到英文面時，卡片下方的提示與按鈕也換成英文：英文寫在 data-en，原本的中文第一次切換時存進 data-zh
+  // 翻到英文面時，標題、提示與按鈕也換成英文：英文寫在 data-en（空字串＝英文面不顯示），原本的中文第一次切換時存進 data-zh
   const t = (zh, en) => flipped ? en : zh;
   function updateLang(){
     hintText.textContent = t("正面：中文｜點擊卡片翻到英文面", "English side · Tap the card to flip back to Chinese");
     document.querySelectorAll('[data-en]').forEach(el=>{
       if(el.dataset.zh === undefined) el.dataset.zh = el.textContent;
       el.textContent = t(el.dataset.zh, el.dataset.en);
+      el.hidden = !el.textContent;
     });
   }
   function syncHeight(){
@@ -778,7 +779,23 @@
       toastTimer = setTimeout(()=> toast.classList.remove('show'), 4000);
     }
     document.getElementById('btn-vcard').addEventListener('click', ()=>{
-      const vcf = [
+      // 英文面存英文姓名的聯絡人，外國人的通訊錄才看得懂；中文面維持原本內容
+      const vcf = (flipped ? [
+        "BEGIN:VCARD",
+        "VERSION:3.0",
+        "N:Shih;Cheng Feng;;;",
+        "FN:Cheng Feng Shih",
+        "NICKNAME:Wind",
+        "ORG:Wind Cross-Industry Development",
+        "TITLE:Full-Stack System Architect / Cross-Industry Freelance Engineer",
+        "TEL;TYPE=CELL,VOICE:+886980463400",
+        "EMAIL;TYPE=WORK,INTERNET:rock90340@gmail.com",
+        "ADR;TYPE=WORK:;;;Taichung;;;Taiwan",
+        "URL;TYPE=WORK:https://wind.rock903400.workers.dev/",
+        "URL;TYPE=HOME:https://line.me/ti/p/~0980463400",
+        "NOTE;CHARSET=UTF-8:Chinese name: 石誠風 · LINE: 0980463400 · Tax ID: 54730503 · Invoice available · Contract · 100% source delivery · Taichung base · Remote island-wide",
+        "END:VCARD",
+      ] : [
         "BEGIN:VCARD",
         "VERSION:3.0",
         "FN:石誠風 Wind",
@@ -796,12 +813,12 @@
         "URL;TYPE=HOME:https://line.me/ti/p/~0980463400",
         "NOTE:統編 54730503｜可開發票·可簽約·100%交付原始碼｜跨產業客製｜臺中基地·全台遠端",
         "END:VCARD"
-      ].join("\r\n");
+      ]).join("\r\n");
       const blob = new Blob([vcf], {type:"text/vcard;charset=utf-8"});
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = "石誠風_Wind.vcf";
+      a.download = t("石誠風_Wind.vcf", "ChengFengShih_Wind.vcf");
       document.body.appendChild(a);
       a.click();
       setTimeout(()=>{ URL.revokeObjectURL(url); a.remove(); }, 1200);
