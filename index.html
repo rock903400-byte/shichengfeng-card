@@ -91,6 +91,8 @@
     pointer-events:none;
   }
   .face > *{position:relative;z-index:1}
+  /* 正面也要有 transform 才會自成一層；否則子元素的 z-index 會跑到背面上方，翻到英文面時變成鏡像字、點擊誤觸 */
+  .face.front{transform:rotateY(0deg)}
   .face.back{transform:rotateY(180deg)}
 
   /* Top bar */
@@ -511,12 +513,23 @@
     const h = Math.max(active.scrollHeight, active.offsetHeight);
     if(h) card.style.height = h + 'px';
   }
+  // 手機瀏覽器會把「點在連結附近」自動吸附到連結上；記下手指真正按下的位置，沒有真的點中連結就不跳轉
+  const LINK_SLOP = 4; // 容許誤差（px）
+  let lastPress = null;
+  document.addEventListener('pointerdown', e=>{ lastPress = {x:e.clientX, y:e.clientY, type:e.pointerType}; }, {capture:true, passive:true});
+  function pressedOnLink(link, e){
+    if(e.detail === 0 || !lastPress || lastPress.type === 'mouse') return true; // 鍵盤、滑鼠不會被吸附
+    return Array.from(link.getClientRects()).some(r =>
+      lastPress.x >= r.left - LINK_SLOP && lastPress.x <= r.right + LINK_SLOP &&
+      lastPress.y >= r.top - LINK_SLOP && lastPress.y <= r.bottom + LINK_SLOP);
+  }
   function toggleFlip(e){
     if(e && e.target){
       const cardLink = e.target.closest('a.card-link');
-      if(cardLink){
-        return;
+      if(cardLink && pressedOnLink(cardLink, e)){
+        return; // 真的點在連結上 → 交給連結跳轉
       }
+      // 沒點中（被吸附過來的）→ 往下走，下面的 preventDefault 會取消跳轉，當成點卡片翻面
       const otherInteractive = e.target.closest('button, input, textarea, select');
       if(otherInteractive && otherInteractive !== btnFlip){
         return;
