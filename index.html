@@ -405,26 +405,26 @@
   <div class="actions">
     <a class="btn btn-primary" href="tel:+886966456400">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.07-8.68A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12 1.21.4 2.39.82 3.52a2 2 0 0 1-.57 2.06L8.09 10.57a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.06-.57c1.13.42 2.31.7 3.52.82A2 2 0 0 1 22 16.92z"/></svg>
-      撥打手機
+      <span data-en="Call Mobile">撥打手機</span>
     </a>
     <a class="btn btn-secondary" href="mailto:rock9034@culroc.org.tw">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-      寄送 Email
+      <span data-en="Send Email">寄送 Email</span>
     </a>
     <a class="btn btn-secondary official-link" href="http://www.culroc.org.tw" target="_blank" rel="noopener" data-official="1">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-      官網
+      <span data-en="Website">官網</span>
     </a>
     <button class="btn btn-ghost" id="btn-vcard" type="button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
-      加入通訊錄
+      <span data-en="Add to Contacts">加入通訊錄</span>
     </button>
     <button class="btn btn-ghost" id="btn-save-img" type="button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
-      儲存名片圖檔
+      <span data-en="Save Card Image">儲存名片圖檔</span>
     </button>
   </div>
-  <div class="vcard-hint">可點擊「加入通訊錄」儲存電話，或點「儲存名片圖檔」存至手機相簿</div>
+  <div class="vcard-hint" data-en="Tap &quot;Add to Contacts&quot; to save the phone numbers, or &quot;Save Card Image&quot; to save the card to your photos">可點擊「加入通訊錄」儲存電話，或點「儲存名片圖檔」存至手機相簿</div>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
 
@@ -505,8 +505,14 @@
   const btnFlip = document.getElementById('btn-flip');
   const hintText = document.getElementById('hint-text');
   let flipped = false;
-  function updateHint(){
-    hintText.textContent = flipped ? "背面：英文｜點擊卡片翻回中文面" : "正面：中文｜點擊卡片翻到英文面";
+  // 翻到英文面時，卡片下方的提示與按鈕也換成英文：英文寫在 data-en，原本的中文第一次切換時存進 data-zh
+  const t = (zh, en) => flipped ? en : zh;
+  function updateLang(){
+    hintText.textContent = t("正面：中文｜點擊卡片翻到英文面", "English side · Tap the card to flip back to Chinese");
+    document.querySelectorAll('[data-en]').forEach(el=>{
+      if(el.dataset.zh === undefined) el.dataset.zh = el.textContent;
+      el.textContent = t(el.dataset.zh, el.dataset.en);
+    });
   }
   function syncHeight(){
     const active = flipped ? back : front;
@@ -538,7 +544,7 @@
     if(e && typeof e.preventDefault === 'function') e.preventDefault();
     flipped = !flipped;
     card.classList.toggle('flipped', flipped);
-    updateHint();
+    updateLang();
     // 高度各自獨立：翻面後同步為該面高度
     requestAnimationFrame(()=>{ syncHeight(); });
   }
@@ -608,11 +614,11 @@
       const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
       const isAndroid = /Android/.test(navigator.userAgent);
       if(isIOS){
-        showToast("已下載 .vcf，請至「檔案」或下載項目開啟，點選「分享」→「加入聯絡人」");
+        showToast(t("已下載 .vcf，請至「檔案」或下載項目開啟，點選「分享」→「加入聯絡人」", "Contact file downloaded. Open it from Files or Downloads, then tap Share → Add to Contacts."));
       } else if(isAndroid){
-        showToast("已下載 .vcf，請在通知列或下載項目開啟，點「加入聯絡人」");
+        showToast(t("已下載 .vcf，請在通知列或下載項目開啟，點「加入聯絡人」", "Contact file downloaded. Open it from the notification or Downloads, then tap Add to Contacts."));
       } else {
-        showToast("已下載聯絡人檔案，開啟後按「加入聯絡人」即可儲存");
+        showToast(t("已下載聯絡人檔案，開啟後按「加入聯絡人」即可儲存", "Contact file downloaded. Open it and choose Add to Contacts to save."));
       }
     });
 
@@ -626,7 +632,7 @@
         s.onerror = ()=> {
           btnSaveImg.innerHTML = originalBtnHtml;
           btnSaveImg.disabled = false;
-          alert("圖檔生成模組載入失敗，請確認網路連線。");
+          alert(t("圖檔生成模組載入失敗，請確認網路連線。", "Couldn't load the image tool. Please check your internet connection."));
         };
         document.head.appendChild(s);
       }
@@ -640,13 +646,13 @@
           modal.innerHTML = `
             <div style="background:#fff;border-radius:16px;max-width:min(90vw,440px);width:100%;padding:16px;box-shadow:0 20px 40px rgba(0,0,0,.35);text-align:center;position:relative">
               <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-                <span style="font-size:14px;font-weight:700;color:#1a2a3a">名片圖檔已直接下載</span>
+                <span id="card-img-title" style="font-size:14px;font-weight:700;color:#1a2a3a">名片圖檔已直接下載</span>
                 <button id="close-img-modal" style="background:#f0f2f5;border:none;border-radius:50%;width:28px;height:28px;font-size:14px;cursor:pointer;color:#666;line-height:28px;padding:0">✕</button>
               </div>
               <div style="max-height:60vh;overflow:auto;border-radius:12px;background:#f8fafd;padding:10px;border:1px solid #eef1f5">
                 <img id="card-img-preview" src="" alt="名片預覽" style="width:100%;height:auto;display:block;border-radius:8px;box-shadow:0 4px 12px rgba(0,0,0,.08)">
               </div>
-              <div style="margin-top:12px;font-size:12px;color:#6b7a8a;line-height:1.5">
+              <div id="card-img-tip" style="margin-top:12px;font-size:12px;color:#6b7a8a;line-height:1.5">
                 💡 手機用戶亦可<strong>長按上方圖片</strong>直接存入相簿
               </div>
             </div>
@@ -660,7 +666,9 @@
           });
         }
         const img = document.getElementById('card-img-preview');
-        if(img) img.src = dataUrl;
+        if(img){ img.src = dataUrl; img.alt = t('名片預覽', 'Card preview'); }
+        document.getElementById('card-img-title').textContent = t('名片圖檔已直接下載', 'Card image downloaded');
+        document.getElementById('card-img-tip').innerHTML = t('💡 手機用戶亦可<strong>長按上方圖片</strong>直接存入相簿', '💡 On a phone you can also <strong>long-press the image</strong> to save it to your photos');
         modal.style.display = 'flex';
         requestAnimationFrame(()=> modal.style.opacity = '1');
       }
@@ -668,7 +676,7 @@
       let originalBtnHtml = '';
       btnSaveImg.addEventListener('click', ()=>{
         originalBtnHtml = btnSaveImg.innerHTML;
-        btnSaveImg.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:18px;height:18px;animation:spin 1s linear infinite"><circle cx="12" cy="12" r="9" stroke-dasharray="28" stroke-linecap="round"/></svg> 生成中...';
+        btnSaveImg.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:18px;height:18px;animation:spin 1s linear infinite"><circle cx="12" cy="12" r="9" stroke-dasharray="28" stroke-linecap="round"/></svg> ' + t('生成中...', 'Generating...');
         btnSaveImg.disabled = true;
 
         loadHtml2Canvas(async ()=>{
@@ -734,7 +742,7 @@
             document.body.appendChild(a);
             a.click();
             setTimeout(()=>{ a.remove(); }, 1000);
-            showToast("名片圖檔已開始直接下載！");
+            showToast(t("名片圖檔已開始直接下載！", "Card image download started!"));
 
             // 2. 開啟高清圖片預覽浮層（手機端支援長按存入相簿）
             showImagePreviewModal(dataUrl, fileName);
@@ -743,7 +751,7 @@
             console.error(err);
             btnSaveImg.innerHTML = originalBtnHtml;
             btnSaveImg.disabled = false;
-            alert("圖檔生成失敗，請直接使用手機截圖。");
+            alert(t("圖檔生成失敗，請直接使用手機截圖。", "Couldn't create the image. Please take a screenshot instead."));
           }
         });
       });
