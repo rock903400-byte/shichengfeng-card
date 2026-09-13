@@ -929,7 +929,9 @@
                   el.style.position = 'relative';
                   el.style.top = 'auto';
                   el.style.left = 'auto';
-                  el.style.boxShadow = '0 12px 30px rgba(30,40,60,.12), 0 0 0 1px rgba(0,0,0,.06) inset';
+                  // html2canvas 畫 inset box-shadow 有 bug（會變成 15px 灰框，手機上左邊還多一條直條），存圖改用一般細框
+                  el.style.boxShadow = 'none';
+                  el.style.border = '1px solid #ddd';
                 }
                 const nameEn = clonedDoc.querySelector('.name.en');
                 if(nameEn){
